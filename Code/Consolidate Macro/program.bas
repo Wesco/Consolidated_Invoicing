@@ -9,7 +9,7 @@ Attribute VB_Name = "program"
 
 Option Explicit
 
-Public Const VersionNumber = "1.0.0"
+Public Const VersionNumber = "1.0.1"
 Public Const RepositoryName = "Consolidated_Invoicing"
 
 '---------------------------------------------------------------------------------------
@@ -47,6 +47,7 @@ Sub Main()
 
     ExportSheet "Discrepancy", ExportPath & "Discrepancy Report " & ReportDate & ".xlsx", xlOpenXMLWorkbook
     ExportSheet "Combined", ExportPath & "Consolidated Report " & ReportDate & ".csv", xlCSV
+    DeleteFiles Path:=CombinePath
     On Error GoTo 0
     Exit Sub
 
