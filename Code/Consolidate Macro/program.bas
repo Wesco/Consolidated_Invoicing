@@ -32,8 +32,8 @@ Sub Main()
     Dim UserProfile As String
     Dim CombinePath As String
     Dim ExportPath As String
-    
-    
+
+
     CombinePath = Environ("USERPROFILE") & "\My Documents\Consolidated Spend Report Emails\"
     ExportPath = Environ("USERPROFILE") & "\My Documents\Consolidated Spend Reports\"
 
@@ -49,6 +49,7 @@ Sub Main()
     ExportSheet "Combined", ExportPath & "Consolidated Report " & ReportDate & ".csv", xlCSV
     DeleteFiles Path:=CombinePath
     On Error GoTo 0
+    Clean
     Exit Sub
 
 ERR_HANDLER:
@@ -72,12 +73,12 @@ End Sub
 Private Sub CheckHeaders()
     Dim ColHeaders As Variant
     Dim i As Integer
-    
+
     ColHeaders = Array("Cust#", "Plant", "2nd Tier Supplier", "Contract#", "Invoice Date", _
                        "VMI Order #", "Order Line", "Stock Code", "Description", "Qty", "Price", _
                        "Extended Price", "Invoice Number", "2nd Tier Supplier Invoice#", _
                        "2nd Tier Supplier Inv date", "Packing List No.")
-                       
+
     For i = 1 To UBound(ColHeaders)
         If Cells(1, i).Value <> ColHeaders(i - 1) Then
             Err.Raise CustErr.REPORTCHANGED, "CheckHeaders", "The consolidated invoice report has changed."
