@@ -1,12 +1,6 @@
 Attribute VB_Name = "AHF_Updater"
 Option Explicit
 
-Private Enum Ver
-    Major
-    Minor
-    Patch
-End Enum
-
 Private Declare PtrSafe Function ShellExecute _
         Lib "shell32.dll" Alias "ShellExecuteA" ( _
         ByVal hWnd As Long, _
@@ -16,78 +10,6 @@ Private Declare PtrSafe Function ShellExecute _
         Optional ByVal Directory As String, _
         Optional ByVal WindowStyle As Long = vbMaximizedFocus _
       ) As Long
-
-'---------------------------------------------------------------------------------------
-' Proc : IncrementMajor
-' Date : 9/4/2013
-' Desc : Increments the macros major version number (major.minor.patch)
-'---------------------------------------------------------------------------------------
-Sub IncrementMajor()
-    IncrementVer Major
-End Sub
-
-'---------------------------------------------------------------------------------------
-' Proc : IncrementMinorVersion
-' Date : 4/24/2013
-' Desc : Increments the macros minor version number (major.minor.patch)
-'---------------------------------------------------------------------------------------
-Sub IncrementMinor()
-    IncrementVer Minor
-End Sub
-
-'---------------------------------------------------------------------------------------
-' Proc : IncrementPatch
-' Date : 9/4/2013
-' Desc : Increments the macros patch number (major.minor.patch)
-'---------------------------------------------------------------------------------------
-Sub IncrementPatch()
-    IncrementVer Patch
-End Sub
-
-'---------------------------------------------------------------------------------------
-' Proc : IncrementVer
-' Date : 9/4/2013
-' Desc :
-'---------------------------------------------------------------------------------------
-Private Sub IncrementVer(Version As Ver)
-    Dim Path As String
-    Dim Ver As Variant
-    Dim FileNum As Integer
-    Dim i As Integer
-
-    Path = Left(ThisWorkbook.fullName, InStr(1, ThisWorkbook.fullName, ThisWorkbook.Name, vbTextCompare) - 1) & "Version.txt"
-    FileNum = FreeFile
-
-    If FileExists(Path) = True Then
-        Open Path For Input As #FileNum
-        Line Input #FileNum, Ver
-        Close FileNum
-
-        'Split version number
-        Ver = Split(Ver, ".")
-
-        'Increment version
-        Select Case Version
-            Case Major
-                Ver(0) = CInt(Ver(0)) + 1
-            Case Minor
-                Ver(1) = CInt(Ver(1)) + 1
-            Case Patch
-                Ver(2) = CInt(Ver(2)) + 1
-        End Select
-
-        'Combine version
-        Ver = Ver(0) & "." & Ver(1) & "." & Ver(2)
-
-        Open Path For Output As #FileNum
-        Print #FileNum, Ver
-        Close #FileNum
-    Else
-        Open Path For Output As #FileNum
-        Print #FileNum, "1.0.0"
-        Close #FileNum
-    End If
-End Sub
 
 '---------------------------------------------------------------------------------------
 ' Proc : CheckForUpdates
